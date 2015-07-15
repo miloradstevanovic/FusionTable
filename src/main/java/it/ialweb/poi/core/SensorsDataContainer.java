@@ -56,6 +56,7 @@ public class SensorsDataContainer {
 
         Log.d(TAG, "SensorsDataContainer created");
         initAlarm();
+        refreshData();
     }
 
     private void initAlarm() {
@@ -99,6 +100,7 @@ public class SensorsDataContainer {
     }
 
     public void refreshData() {
+        Log.d(TAG, "refreshData called");
         NetworkManager.INSTANCE.getData(150, new Callback<SensorsDataList>() {
             @Override
             public void success(SensorsDataList sensorsDataList, Response response) {
@@ -114,6 +116,10 @@ public class SensorsDataContainer {
 
     public BaseSeries<DataPoint> getSerie(String property) {
         return _series.get(property);
+    }
+
+    public String[] getProperties() {
+        return _avgValuesMap.entrySet().toArray(new String[_avgValuesMap.size()]);
     }
 
     public double getValue(String property, int dataValue) {
