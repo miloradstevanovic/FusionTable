@@ -1,11 +1,8 @@
 package it.ialweb.poi;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,19 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.zip.Inflater;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("IoT");
-        getData(100);
     }
 
     private void setupGui() {
@@ -68,42 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 };
             }
         });
-    }
-
-    public void getData(int limitResults) {
-        RestAdapter retrofit = new RestAdapter.Builder().setEndpoint(
-                "https://www.googleapis.com/fusiontables/v2"
-        ).build();
-
-        String query = null;
-
-        try {
-            query = URLEncoder.encode(
-                    "SELECT * FROM 1vGFzsJsfHFVKhX5kjBB10eZfsXLiIz3RJY_D1sx2 ORDER BY TimestampMillis DESC LIMIT " + limitResults, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        String queryFixed = query.replaceAll("\\+", "%20");
-        FusionService service = retrofit.create(FusionService.class);
-
-        service.listSensorDataRecords(queryFixed, new Callback<SensorsDataList>() {
-
-            @Override
-            public void failure(RetrofitError arg0) {
-                System.out.print("hej");
-            }
-
-            @Override
-            public void success(SensorsDataList arg0, Response arg1) {
-                data = arg0.build();
-                Set<String> keys = data.keySet();
-                mapKeysArray = keys.toArray(new String[keys.size()]);
-                setupGui();
-            }
-
-        });
-
     }
 
     public static class PlaceHolder extends Fragment {
