@@ -1,0 +1,44 @@
+{
+  "kind": "fusiontables#sqlresponse",
+  "columns": [
+    "Date",
+    "Time",
+    "Station",
+    "Location",
+    "Temp",
+    "Humidity",
+    "Neve",
+    "GAS",
+    "LUX",
+    "ml",
+    "TimestampMillis"
+  ],
+  "rows": [
+    [
+      "2007-01-01",
+      "01:00:53+CET",
+      "ID11",
+      "45.95315,12.682864",
+      27.31,
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN"
+    ],
+    [
+      "2007-01-01",
+      "01:00:54+CET",
+      "ID11",
+      "45.95315,12.682864",
+      27.31,
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN",
+      "NaN"
+    ]
+  ]
+}
