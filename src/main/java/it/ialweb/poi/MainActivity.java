@@ -1,5 +1,6 @@
 package it.ialweb.poi;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String CATKEY = "CATKEY";
     public static Map<String, List<Pair<Long, String>>> data;
     public static String[] mapKeysArray;
 
@@ -129,19 +131,13 @@ public class MainActivity extends AppCompatActivity {
                     itemView.setOnClickListener(this);
                 }
 
-                @Override
+                @Override //bs781
                 public void onClick(View v) {
                     String sensor = ((TextView)v.findViewById(R.id.txtView_sensorTitle)).getText().toString();
-                    switch (sensor) {
-                        case "Humidity" :
-                            break;
-                        case "Rain" :
-                            break;
-                        case "Neve" :
-                            break;
-                        case "Temp" :
-                            break;
-                    }
+
+                    Intent startDetailActivityIntent = new Intent(MainActivity.this, DetailActivity.class);
+                    startDetailActivityIntent.putExtra(CATKEY, sensor);
+                    startActivity(startDetailActivityIntent);
                 }
             }
         });
