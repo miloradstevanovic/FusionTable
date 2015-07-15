@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.Inflater;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -45,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupGui() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        RecyclerView recyclerView = new RecyclerView(this);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView_sensorList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         recyclerView.setAdapter(new RecyclerView.Adapter<ViewHolder>() {
             @Override
             public int getItemCount() {
@@ -64,13 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
                 return new ViewHolder(view) {
                 };
-            }
-        });
-
-        findViewById(R.id.fabBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(findViewById(R.id.coordinator), "abcdefg", Snackbar.LENGTH_LONG).show();
             }
         });
     }
