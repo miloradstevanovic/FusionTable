@@ -1,6 +1,7 @@
-package it.ialweb.poi;
+package it.ialweb.poi.core.network;
 
 
+import it.ialweb.poi.core.data.SensorsDataList;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;

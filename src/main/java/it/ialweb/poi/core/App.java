@@ -2,6 +2,8 @@ package it.ialweb.poi.core;
 
 import android.app.Application;
 
+import it.ialweb.poi.core.data.SensorsDataContainer;
+
 public class App extends Application {
 
     @Override

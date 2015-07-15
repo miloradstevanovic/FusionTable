@@ -3,8 +3,7 @@ package it.ialweb.poi.core.network;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import it.ialweb.poi.FusionService;
-import it.ialweb.poi.SensorsDataList;
+import it.ialweb.poi.core.data.SensorsDataList;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 

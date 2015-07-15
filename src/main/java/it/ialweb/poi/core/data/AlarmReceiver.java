@@ -1,4 +1,4 @@
-package it.ialweb.poi.core;
+package it.ialweb.poi.core.data;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

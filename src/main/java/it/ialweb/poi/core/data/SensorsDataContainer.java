@@ -1,4 +1,4 @@
-package it.ialweb.poi.core;
+package it.ialweb.poi.core.data;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -16,9 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import it.ialweb.poi.SensorsDataList;
 import it.ialweb.poi.core.network.NetworkManager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -86,9 +84,9 @@ public class SensorsDataContainer {
 
             for (Pair<Long, String> pair : values) {
                 try {
-                    current = Long.parseLong(pair.second);
+                    current = Double.parseDouble(pair.second);
                     avg += current;
-                    dpoints[count++] = new DataPoint(pair.first, current);
+                    dpoints[count++] = new DataPoint(count - 1, current);
                 } catch (NumberFormatException nFEx) { /* yolo */ }
             }
 
@@ -119,12 +117,17 @@ public class SensorsDataContainer {
         });
     }
 
-    public BaseSeries<DataPoint> getSerie(String property) {
+    public BaseSeries<DataPoint> getSeries(String property) {
         return _series.get(property);
     }
 
     public String[] getProperties() {
         return _avgValuesMap.keySet().toArray(new String[_avgValuesMap.size()]);
+    }
+
+    public int valuesCount(String property) {
+        List<Pair<Long, String>> values = _data.get(property);
+        return values == null ? -1 : values.size();
     }
 
     public double getValue(String property, int dataValue) {

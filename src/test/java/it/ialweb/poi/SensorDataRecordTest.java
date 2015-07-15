@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 
+import it.ialweb.poi.core.data.SensorsDataList;
+
 /**
  * Created by TSAIM044 on 14/07/2015.
  */

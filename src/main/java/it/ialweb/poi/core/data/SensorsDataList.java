@@ -1,13 +1,11 @@
-package it.ialweb.poi;
+package it.ialweb.poi.core.data;
 
 import android.support.v4.util.Pair;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by TSAIM044 on 14/07/2015.
