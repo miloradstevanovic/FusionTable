@@ -1,7 +1,13 @@
 package it.ialweb.poi;
 
+import android.support.v4.util.Pair;
+
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by TSAIM044 on 14/07/2015.
@@ -14,37 +20,30 @@ public class SensorsDataList {
         return rows;
     }
 
-    public SensorDataRecord build() {
+    public Map<String, List<Pair<Long, String>>> build() {
 
-        SensorDataRecord currentValues = new SensorDataRecord();
         String location = "45.95315,12.682864";
+        Map<String, List<Pair<Long, String>>> ret = new HashMap<>();
+
+        int timeStampIndex = columns.indexOf("TimestampMillis");
 
         for (int i = rows.size() - 1; i >= 0; i--) {
             List<String> sensorRecord = rows.get(i);
             for (int j = 4; j < sensorRecord.size(); j++) {
+                if (j == timeStampIndex) continue;
                 String propertyValue = sensorRecord.get(j);
                 if (!propertyValue.equals("NaN")) {
-                    String fieldName = columns.get(j).toLowerCase();
-                    try {
-                        Field field = currentValues.getClass().getField(fieldName);
+                    String propertyName = columns.get(j).toLowerCase();
+                    if (propertyName.equals("TimestampMillis")) continue;
 
-                        Object value = null;
-                        switch (fieldName) {
-                            case "temp":
-                            case "humidity":
-                            case "ml":
-                                value = Double.parseDouble(propertyValue);
-                                break;
-                        }
-
-                        field.set(currentValues, value);
-                    } catch (Exception e) { e.printStackTrace(); }
+                    if (ret.get(propertyName) == null)
+                        ret.put(propertyName, new ArrayList<Pair<Long, String>>());
+                    ret.get(propertyName).add(new Pair<Long, String>(Double.valueOf(sensorRecord.get(timeStampIndex)).longValue(), propertyValue));
                 }
             }
         }
 
-        currentValues.location = location;
-        return currentValues;
+        return ret;
     }
 
 }

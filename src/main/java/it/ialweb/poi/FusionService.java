@@ -13,7 +13,7 @@ import retrofit.http.Query;
  */
 public interface FusionService {
 
-    @GET("/?key=AIzaSyCRQ2xsLkUgWwbUwx0wA7ektLfRC1wFZPs")
-    void listSensorDataRecords(@Query("sql") String query, Callback<List<SensorsDataList>> cb);
+    @GET("/query?key=AIzaSyCRQ2xsLkUgWwbUwx0wA7ektLfRC1wFZPs")
+    void listSensorDataRecords(@Query(value = "sql", encodeValue = false) String query, Callback<SensorsDataList> cb);
 
 }
