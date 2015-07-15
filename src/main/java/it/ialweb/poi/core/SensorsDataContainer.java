@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import it.ialweb.poi.SensorsDataList;
 import it.ialweb.poi.core.network.NetworkManager;
@@ -99,6 +100,10 @@ public class SensorsDataContainer {
         _eventBus.post(this);
     }
 
+    public Bus getBus() {
+        return _eventBus;
+    }
+
     public void refreshData() {
         Log.d(TAG, "refreshData called");
         NetworkManager.INSTANCE.getData(150, new Callback<SensorsDataList>() {
@@ -119,7 +124,7 @@ public class SensorsDataContainer {
     }
 
     public String[] getProperties() {
-        return _avgValuesMap.entrySet().toArray(new String[_avgValuesMap.size()]);
+        return _avgValuesMap.keySet().toArray(new String[_avgValuesMap.size()]);
     }
 
     public double getValue(String property, int dataValue) {
