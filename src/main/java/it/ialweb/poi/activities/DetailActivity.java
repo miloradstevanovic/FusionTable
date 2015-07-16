@@ -1,7 +1,7 @@
 package it.ialweb.poi.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
@@ -15,7 +15,7 @@ import it.ialweb.poi.R;
 import it.ialweb.poi.core.data.SensorsDataContainer;
 import it.ialweb.poi.utils.DataParser;
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends AppCompatActivity {
 
     public final static String PROPERTY_NAME_TAG = "propertynametag";
 
@@ -30,6 +30,7 @@ public class DetailActivity extends ActionBarActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         mGraphView = (GraphView) findViewById(R.id.graph);
+        mGraphView.getViewport().setScalable(true);
         mTvAvg = (TextView) findViewById(R.id.tvAvg);
         mTvCurrent = (TextView) findViewById(R.id.tvCurrent);
 

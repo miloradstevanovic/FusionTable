@@ -140,7 +140,7 @@ public class SensorsDataContainer {
         @Override
         protected void onPostExecute(Void aVoid) {
             Log.d(TAG, "Notify data changed");
-            _eventBus.post(this);
+            _eventBus.post(SensorsDataContainer.this);
             super.onPostExecute(aVoid);
         }
     }

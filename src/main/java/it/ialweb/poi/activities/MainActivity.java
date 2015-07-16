@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
@@ -14,6 +15,7 @@ import it.ialweb.poi.core.data.SensorsDataContainer;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private RecyclerView mRecyclerView;
     private PropertiesAdapter mAdapter;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe public void updateGui(SensorsDataContainer sdc) {
+        Log.d(TAG, "mAdapter.notifyDataSetChanged()");
         mAdapter.notifyDataSetChanged();
     }
 }
