@@ -1,5 +1,6 @@
 package it.ialweb.poi.core.data;
 
+import android.os.AsyncTask;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -45,37 +46,6 @@ public class SensorsDataContainer {
         refreshData();
     }
 
-    private void createGraphSeries(SensorsDataList sensorsDataList) {
-        Log.i(TAG, "createGraphSeries");
-
-        _series.clear();
-        _avgValuesMap.clear();
-        _data = sensorsDataList.build();
-        for (Map.Entry<String, List<Pair<Long, String>>> valuesPerProp : _data.entrySet()) {
-
-            String property = valuesPerProp.getKey();
-            List<Pair<Long, String>> values = valuesPerProp.getValue();
-
-            int count = 0;
-            double avg = 0, current = 0;
-            DataPoint[] dpoints = new DataPoint[values.size()];
-
-            for (Pair<Long, String> pair : values) {
-                try {
-                    current = Double.parseDouble(pair.second);
-                    avg += current;
-                    dpoints[count++] = new DataPoint(count - 1, current);
-                } catch (NumberFormatException nFEx) { /* yolo */ }
-            }
-
-            avg /= count;
-            _avgValuesMap.put(property, new Pair<Double, Double>(current, avg));
-            _series.put(property, new LineGraphSeries<DataPoint>(dpoints));
-        }
-
-        _eventBus.post(this);
-    }
-
     public Bus getBus() {
         return _eventBus;
     }
@@ -85,7 +55,7 @@ public class SensorsDataContainer {
         NetworkManager.INSTANCE.getData(TIME_SPAN, new Callback<SensorsDataList>() {
             @Override
             public void success(SensorsDataList sensorsDataList, Response response) {
-                createGraphSeries(sensorsDataList);
+                new ParseDataAsyncTask().execute(sensorsDataList);
             }
 
             @Override
@@ -130,5 +100,48 @@ public class SensorsDataContainer {
     public static class DataValues {
         public final static int CURRENT = 10;
         public final static int AVG = 11;
+    }
+
+    private class ParseDataAsyncTask extends AsyncTask<SensorsDataList, Void, Void> {
+
+        @Override
+        protected Void doInBackground(SensorsDataList... params) {
+
+            Log.i(TAG, "createGraphSeries");
+
+            _series.clear();
+            _avgValuesMap.clear();
+            _data = params[0].build();
+            for (Map.Entry<String, List<Pair<Long, String>>> valuesPerProp : _data.entrySet()) {
+
+                String property = valuesPerProp.getKey();
+                List<Pair<Long, String>> values = valuesPerProp.getValue();
+
+                int count = 0;
+                double avg = 0, current = 0;
+                DataPoint[] dpoints = new DataPoint[values.size()];
+
+                for (Pair<Long, String> pair : values) {
+                    try {
+                        current = Double.parseDouble(pair.second);
+                        avg += current;
+                        dpoints[count++] = new DataPoint(count - 1, current);
+                    } catch (NumberFormatException nFEx) { /* yolo */ }
+                }
+
+                avg /= count;
+                _avgValuesMap.put(property, new Pair<>(current, avg));
+                _series.put(property, new LineGraphSeries<>(dpoints));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.d(TAG, "Notify data changed");
+            _eventBus.post(this);
+            super.onPostExecute(aVoid);
+        }
     }
 }
