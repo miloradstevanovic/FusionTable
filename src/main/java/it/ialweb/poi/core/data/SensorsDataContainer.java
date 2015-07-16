@@ -1,9 +1,5 @@
 package it.ialweb.poi.core.data;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -12,7 +8,6 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.squareup.otto.Bus;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,28 +20,21 @@ import retrofit.client.Response;
 public class SensorsDataContainer {
 
     private final static String TAG = "SensorsDataContainer";
-
-    private final static int TIME = 2 * 60 * 1000;
+    private final static int TIME_SPAN = 20 * 60 * 1000;
 
     private static SensorsDataContainer _instance;
 
     private Map<String, Pair<Double, Double>> _avgValuesMap;
     private Map<String, List<Pair<Long, String>>> _data;
     private Map<String, BaseSeries<DataPoint>> _series;
-    private Context _context;
     private Bus _eventBus;
 
     public static SensorsDataContainer getInstance() {
+        if (_instance == null) _instance = new SensorsDataContainer();
         return _instance;
     }
 
-    public static SensorsDataContainer getInstance(Context context) {
-        if (_instance == null) _instance = new SensorsDataContainer(context);
-        return _instance;
-    }
-
-    private SensorsDataContainer(Context context) {
-        _context = context;
+    private SensorsDataContainer() {
         _eventBus = new Bus();
 
         _data = new HashMap<>();
@@ -54,17 +42,7 @@ public class SensorsDataContainer {
         _series = new HashMap<>();
 
         Log.d(TAG, "SensorsDataContainer created");
-        initAlarm();
         refreshData();
-    }
-
-    private void initAlarm() {
-        Calendar updateTime = Calendar.getInstance();
-        updateTime.set(Calendar.SECOND, 5);
-        Intent alarmIntent = new Intent(_context, AlarmReceiver.class);
-        PendingIntent recurringDownload = PendingIntent.getBroadcast(_context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarms = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-        alarms.setRepeating(AlarmManager.RTC_WAKEUP, updateTime.getTimeInMillis(), TIME, recurringDownload);
     }
 
     private void createGraphSeries(SensorsDataList sensorsDataList) {
@@ -104,7 +82,7 @@ public class SensorsDataContainer {
 
     public void refreshData() {
         Log.d(TAG, "refreshData called");
-        NetworkManager.INSTANCE.getData(150, new Callback<SensorsDataList>() {
+        NetworkManager.INSTANCE.getData(TIME_SPAN, new Callback<SensorsDataList>() {
             @Override
             public void success(SensorsDataList sensorsDataList, Response response) {
                 createGraphSeries(sensorsDataList);
