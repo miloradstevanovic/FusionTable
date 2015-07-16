@@ -62,8 +62,9 @@ public class DetailActivity extends ActionBarActivity {
             Viewport v = mGraphView.getViewport();
             v.setXAxisBoundsManual(true);
             v.setMaxX(series.getHighestValueX());
-            /*v.setYAxisBoundsManual(true);
-            v.setMaxY(series.getHighestValueY());*/
+            v.setYAxisBoundsManual(true);
+            v.setMaxY(series.getHighestValueY() + 5);
+            v.setMinY(series.getLowestValueY() - 5);
             mGraphView.addSeries(series);
         }
 

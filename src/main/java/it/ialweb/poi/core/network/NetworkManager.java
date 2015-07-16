@@ -27,7 +27,7 @@ public class NetworkManager {
         try {
             query = URLEncoder.encode(
                     "SELECT * FROM 1vGFzsJsfHFVKhX5kjBB10eZfsXLiIz3RJY_D1sx2 WHERE TimestampMillis >= " + limit +
-                            "ORDER BY TimestampMillis DESC", "UTF-8");
+                            " ORDER BY TimestampMillis DESC", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
